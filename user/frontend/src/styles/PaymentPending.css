@@ -1,1 +1,37 @@
-.payment-result{text-align:center;padding-top:65px}.payment-result h2{font-size:20px}.payment-result p{font-size:13px;color:#888;line-height:1.7}.result-symbol{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;margin:0 auto 20px;font-size:45px}.result-symbol.pending{color:#e48700;background:#fff3d8}.text-action{background:none;border:0;color:#888;margin-top:18px;text-decoration:underline}
+.payment-result {
+  text-align: center;
+  padding-top: 65px;
+}
+
+.payment-result h2 {
+  font-size: 20px;
+}
+
+.payment-result p {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.7;
+}
+
+.result-symbol {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 20px;
+  font-size: 45px;
+}
+
+.result-symbol.pending {
+  color: #e48700;
+  background: #fff3d8;
+}
+
+.text-action {
+  background: none;
+  border: 0;
+  color: #888;
+  margin-top: 18px;
+  text-decoration: underline;
+}

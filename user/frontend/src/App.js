@@ -7,86 +7,132 @@ import {
   Navigate,
 } from "react-router-dom";
 
-// Existing Pages
-import Basket from "./pages/Basket";
+import { StoreProvider } from "./context/StoreContext";
+
+// Pages
+import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
+import ProductDetails from "./pages/ProductDetails";
+import Basket from "./pages/Basket";
 import Checkout from "./pages/Checkout";
-import Login from "./pages/Login";
+
+import PaymentPending from "./pages/PaymentPending";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
+
+import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import OrderTracking from "./pages/OrderTracking";
-import TransactionHistory from "./pages/TransactionHistory";
 
-// Registration Page
-import Registration from "./pages/Registration";
+import TransactionHistory from "./pages/TransactionHistory";
+import TransactionDetails from "./pages/TransactionDetails";
+
+import Profile from "./pages/Profile";
+import EmptyBasket from "./pages/EmptyBasket";
+import EmptyOrders from "./pages/EmptyOrders";
 
 function App() {
-
   return (
-
     <BrowserRouter>
+      <StoreProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Navigate to="/home" replace />
+            }
+          />
 
-      <Routes>
+          <Route
+            path="/home"
+            element={<Home />}
+          />
 
-        {/* Default Page */}
-        <Route
-          path="/"
-          element={<Navigate to="/registration" replace />}
-        />
+          <Route
+            path="/catalogue"
+            element={<Catalogue />}
+          />
 
-        {/* Registration */}
-        <Route
-          path="/registration"
-          element={<Registration />}
-        />
+          <Route
+            path="/product/:id"
+            element={<ProductDetails />}
+          />
 
-        {/* Login */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+          <Route
+            path="/basket"
+            element={<Basket />}
+          />
 
-        {/* Catalogue */}
-        <Route
-          path="/catalogue"
-          element={<Catalogue />}
-        />
+          <Route
+            path="/basket/empty"
+            element={<EmptyBasket />}
+          />
 
-        {/* Basket */}
-        <Route
-          path="/basket"
-          element={<Basket />}
-        />
+          <Route
+            path="/checkout"
+            element={<Checkout />}
+          />
 
-        {/* Checkout */}
-        <Route
-          path="/checkout"
-          element={<Checkout />}
-        />
+          <Route
+            path="/payment/pending"
+            element={<PaymentPending />}
+          />
 
-        {/* Orders */}
-        <Route
-          path="/orders/:id"
-          element={<OrderDetails />}
-        />
+          <Route
+            path="/payment/success"
+            element={<PaymentSuccess />}
+          />
 
-        {/* Order Tracking */}
-        <Route
-          path="/tracking/:id"
-          element={<OrderTracking />}
-        />
+          <Route
+            path="/payment/failed"
+            element={<PaymentFailed />}
+          />
 
-        {/* Transaction History */}
-        <Route
-          path="/transactions"
-          element={<TransactionHistory />}
-        />
+          <Route
+            path="/orders"
+            element={<Orders />}
+          />
 
-      </Routes>
+          <Route
+            path="/orders/empty"
+            element={<EmptyOrders />}
+          />
 
+          <Route
+            path="/orders/:id"
+            element={<OrderDetails />}
+          />
+
+          <Route
+            path="/tracking/:id"
+            element={<OrderTracking />}
+          />
+
+          <Route
+            path="/transactions"
+            element={<TransactionHistory />}
+          />
+
+          <Route
+            path="/transactions/:id"
+            element={<TransactionDetails />}
+          />
+
+          <Route
+            path="/profile"
+            element={<Profile />}
+          />
+
+          <Route
+            path="*"
+            element={
+              <Navigate to="/home" replace />
+            }
+          />
+        </Routes>
+      </StoreProvider>
     </BrowserRouter>
-
   );
-
 }
 
 export default App;

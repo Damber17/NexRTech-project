@@ -1,2 +1,55 @@
-import React from "react";import {useNavigate} from "react-router-dom";import {Screen,EmptyState} from "../components/common/UI";import {useStore} from "../StoreContext";import {money} from "../data";import "../styles/TransactionHistory.css";
-export default function TransactionHistory(){const go=useNavigate(),{orders}=useStore();return <Screen title="Transactions" back>{orders.length?orders.map(o=><button key={o.id} className="transaction-row panel" onClick={()=>go(`/transactions/${o.id}`)}><div className="transaction-icon">↗</div><div><strong>{o.shop}</strong><p className="muted small">{o.date} · {o.id}</p></div><b className="orange">{money(o.total)}</b></button>):<EmptyState icon="💳" title="No transactions yet" description="Your transaction history will appear here."/>}</Screen>}
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import {
+  Screen,
+  EmptyState,
+} from "../components/common/UI";
+
+import { useStore } from "../context/StoreContext";
+import { money } from "../data";
+
+import "../styles/TransactionHistory.css";
+
+export default function TransactionHistory() {
+  const navigate = useNavigate();
+  const { orders } = useStore();
+
+  return (
+    <Screen title="Transactions" back>
+      {orders.length > 0 ? (
+        orders.map((order) => (
+          <button
+            key={order.id}
+            className="transaction-row panel"
+            onClick={() =>
+              navigate(`/transactions/${order.id}`)
+            }
+          >
+            <div className="transaction-icon">
+              ↗
+            </div>
+
+            <div>
+              <strong>{order.shop}</strong>
+
+              <p className="muted small">
+                {order.date} · {order.id}
+              </p>
+            </div>
+
+            <b className="orange">
+              {money(order.total)}
+            </b>
+          </button>
+        ))
+      ) : (
+        <EmptyState
+          icon="💳"
+          title="No transactions yet"
+          description="Your transaction history will appear here."
+        />
+      )}
+    </Screen>
+  );
+}

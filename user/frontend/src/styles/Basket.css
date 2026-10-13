@@ -1,1 +1,34 @@
-.basket-line{display:flex;align-items:center;gap:10px}.basket-line img{height:62px;width:62px;object-fit:cover;border-radius:6px}.basket-line-info{display:flex;flex-direction:column;gap:6px;flex:1;font-size:12px}.quantity-controls{display:flex;align-items:center;gap:9px}.quantity-controls button{border:0;background:#fff1dd;color:#df8200;border-radius:5px;padding:5px 8px}
+.basket-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.basket-line img {
+  height: 62px;
+  width: 62px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.basket-line-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  font-size: 12px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.quantity-controls button {
+  border: 0;
+  background: #fff1dd;
+  color: #df8200;
+  border-radius: 5px;
+  padding: 5px 8px;
+}

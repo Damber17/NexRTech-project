@@ -1,1 +1,11 @@
-.success-result{padding-top:65px}.success-result>svg{margin-bottom:15px}.success-result h2{color:#218b45}
+.success-result {
+  padding-top: 65px;
+}
+
+.success-result > svg {
+  margin-bottom: 15px;
+}
+
+.success-result h2 {
+  color: #218b45;
+}

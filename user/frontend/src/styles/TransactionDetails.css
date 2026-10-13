@@ -1,1 +1,20 @@
-.transaction-receipt{text-align:center;padding:45px 0 30px}.receipt-symbol{width:65px;height:65px;border-radius:50%;background:#eaf8ee;color:#1d9c4c;font-size:32px;display:grid;place-items:center;margin:auto}.transaction-receipt h2{font-size:25px}
+.transaction-receipt {
+  text-align: center;
+  padding: 45px 0 30px;
+}
+
+.receipt-symbol {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #eaf8ee;
+  color: #1d9c4c;
+  font-size: 32px;
+  display: grid;
+  place-items: center;
+  margin: auto;
+}
+
+.transaction-receipt h2 {
+  font-size: 25px;
+}

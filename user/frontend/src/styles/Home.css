@@ -1,395 +1,44 @@
-/* =====================================
-   HOME PAGE
-===================================== */
-
-.home-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* =====================================
-   MOBILE CONTAINER
-===================================== */
-
-.home-container {
-  width: 100%;
-  max-width: 430px;
-  min-height: 100vh;
-
-  margin: 0 auto;
-
-  background: #ffffff;
-
-  position: relative;
-
-  padding-bottom: 100px;
-}
-
-/* =====================================
-   STATUS BAR
-===================================== */
-
-.home-status-bar {
-  height: 45px;
-
-  padding: 15px 20px 0;
-
+.home-welcome {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  color: #222;
+  margin: 18px 0 30px;
 }
 
-.home-status-icons {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  font-size: 10px;
-}
-
-/* =====================================
-   USER HEADER
-===================================== */
-
-.home-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 20px 24px 0;
-}
-
-.home-avatar {
-  width: 45px;
-  height: 45px;
-
+.home-welcome img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
   border-radius: 50%;
-  overflow: hidden;
-
-  border: 2px solid #f4f4f4;
 }
 
-.home-avatar img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.home-user-info {
-  text-align: left;
-}
-
-.home-user-info p {
-  font-size: 13px;
-  color: #888;
-
-  margin-bottom: 4px;
-}
-
-.home-user-info h2 {
-  font-size: 18px;
-  font-weight: 700;
-
-  color: #222;
-  margin: 0;
-}
-
-/* =====================================
-   SEARCH BAR
-===================================== */
-
-.home-search-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  height: 46px;
-
-  margin: 42px 24px 0;
-  padding: 0 15px;
-
-  border: 1px solid #e5e5e5;
-  border-radius: 10px;
-
-  background: #fafafa;
-}
-
-.home-search-icon {
-  color: #777;
-  flex-shrink: 0;
-}
-
-.home-search-container input {
-  flex: 1;
-  min-width: 0;
-
-  height: 100%;
-
-  border: none;
-  outline: none;
-
-  background: transparent;
-
-  font-size: 13px;
-  color: #333;
-}
-
-.home-search-container input::placeholder {
-  color: #aaa;
-}
-
-/* =====================================
-   SHOPS SECTION
-===================================== */
-
-.home-shops-section {
-  padding: 48px 24px 20px;
-}
-
-.home-section-title {
-  font-size: 16px;
-  font-weight: 700;
-
-  color: #222;
-
-  margin: 0 0 18px;
-}
-
-/* =====================================
-   SHOPS LIST
-===================================== */
-
-.home-shops-list {
+.home-welcome div {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 4px;
 }
 
-/* =====================================
-   SHOP CARD
-===================================== */
-
-.home-shop-card {
-  width: 100%;
-
-  background: white;
-
-  border: 1px solid #e8e8e8;
-  border-radius: 13px;
-
-  overflow: hidden;
-
-  cursor: pointer;
-
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-
-  transition: transform 0.2s ease,
-              box-shadow 0.2s ease;
+.home-welcome small {
+  color: #999;
 }
 
-.home-shop-card:hover {
-  transform: translateY(-2px);
-
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+.home-welcome strong {
+  font-size: 17px;
 }
 
-/* =====================================
-   SHOP IMAGE
-===================================== */
-
-.home-shop-image {
-  width: 100%;
-  height: 135px;
-
-  overflow: hidden;
+.search-wrap {
+  position: relative;
+  margin: 12px 0 34px;
 }
 
-.home-shop-image img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-/* =====================================
-   SHOP DETAILS
-===================================== */
-
-.home-shop-details {
-  padding: 14px 15px 16px;
-}
-
-.home-shop-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 10px;
-}
-
-.home-shop-top h4 {
-  font-size: 14px;
-  font-weight: 700;
-
-  color: #222;
-
-  margin: 0;
-}
-
-.home-category {
-  padding: 5px 9px;
-
-  background: #fff4e5;
-
-  color: #e88700;
-
-  border-radius: 5px;
-
-  font-size: 11px;
-  font-weight: 500;
-
-  white-space: nowrap;
-}
-
-/* =====================================
-   SHOP LOCATION
-===================================== */
-
-.home-shop-location {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  margin-top: 8px;
-
-  color: #888;
-
-  font-size: 12px;
-}
-
-.home-shop-location svg {
-  flex-shrink: 0;
-}
-
-/* =====================================
-   NO RESULTS
-===================================== */
-
-.home-no-results {
-  padding: 25px;
-
-  text-align: center;
-
-  color: #888;
-  font-size: 14px;
-}
-
-/* =====================================
-   BOTTOM NAVIGATION
-===================================== */
-
-.home-bottom-nav {
+.search-wrap svg {
   position: absolute;
-  bottom: 0;
-  left: 0;
-
-  width: 100%;
-  height: 85px;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  background: white;
-
-  border-top: 1px solid #eeeeee;
+  top: 13px;
+  left: 12px;
+  color: #888;
 }
 
-.home-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 5px;
-
-  background: none;
-  border: none;
-
-  color: #777;
-
-  font-size: 11px;
-
-  cursor: pointer;
-
-  transition: color 0.2s ease;
-}
-
-.home-nav-item.active {
-  color: #e88700;
-}
-
-.home-nav-item:hover {
-  color: #e88700;
-}
-
-/* =====================================
-   MOBILE RESPONSIVENESS
-===================================== */
-
-@media (max-width: 480px) {
-
-  .home-container {
-    max-width: 100%;
-  }
-
-  .home-header {
-    padding: 18px 20px 0;
-  }
-
-  .home-search-container {
-    margin: 38px 20px 0;
-  }
-
-  .home-shops-section {
-    padding: 42px 20px 20px;
-  }
-
-  .home-shop-image {
-    height: 130px;
-  }
-
-}
-
-/* =====================================
-   DESKTOP VIEW
-===================================== */
-
-@media (min-width: 768px) {
-
-  .home-page {
-    padding: 30px 0;
-  }
-
-  .home-container {
-    min-height: 850px;
-
-    border-radius: 18px;
-
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-
-    overflow: hidden;
-  }
-
-  .home-bottom-nav {
-    position: absolute;
-  }
-
+.search-wrap input {
+  padding-left: 37px;
+  font-size: 12px;
 }
