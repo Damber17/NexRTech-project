@@ -1,0 +1,2 @@
+import React from "react";import {useNavigate} from "react-router-dom";import {Screen,EmptyState} from "../components/common/UI";import "../styles/EmptyBasket.css";
+export default function EmptyBasket(){const go=useNavigate();return <Screen title="My Basket"><EmptyState icon="🛍️" title="Your basket is empty" description="Add products from your favorite shops to get started." action="Browse Shops" onAction={()=>go("/home")}/></Screen>}
