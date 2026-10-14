@@ -1,11 +1,50 @@
 .success-result {
-  padding-top: 65px;
+  padding-top: 48px;
+  text-align: center;
 }
 
 .success-result > svg {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .success-result h2 {
-  color: #218b45;
+  font-size: 22px;
+  font-weight: 700;
+  color: #188b43;
+  margin: 0 0 8px;
+}
+
+.success-result p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .success-result {
+    padding-top: 64px;
+  }
+
+  .success-result h2 {
+    font-size: 26px;
+  }
+
+  .success-result p {
+    font-size: 15px;
+  }
+}
+
+/* ==============================
+   DESKTOP
+============================== */
+@media (min-width: 900px) {
+  .success-result {
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 80px;
+  }
 }

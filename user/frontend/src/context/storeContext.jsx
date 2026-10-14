@@ -1,30 +1,41 @@
 import React, {
   createContext,
   useContext,
-  useState,
+  useState
 } from "react";
 
-import { initialOrders, products } from "../data";
+import {
+  initialOrders,
+  products
+} from "../data";
 
 const StoreContext = createContext(null);
 
-export const useStore = () => useContext(StoreContext);
+export const useStore = () => {
+  return useContext(StoreContext);
+};
 
 export function StoreProvider({ children }) {
+
   const [basket, setBasket] = useState([
     { id: 1, qty: 2 },
-    { id: 2, qty: 1 },
+    { id: 2, qty: 1 }
   ]);
 
   const [orders, setOrders] = useState(initialOrders);
 
-  const [paymentMethod, setPaymentMethod] = useState("M-Pesa");
+  const [paymentMethod, setPaymentMethod] =
+    useState("M-Pesa");
 
   const [lastOrder, setLastOrder] = useState(null);
 
   const add = (id) => {
+
     setBasket((previous) => {
-      const existing = previous.find((item) => item.id === id);
+
+      const existing = previous.find(
+        (item) => item.id === id
+      );
 
       if (existing) {
         return previous.map((item) =>
@@ -35,28 +46,38 @@ export function StoreProvider({ children }) {
       }
 
       return [...previous, { id, qty: 1 }];
+
     });
+
   };
 
   const update = (id, change) => {
+
     setBasket((previous) =>
       previous
         .map((item) =>
           item.id === id
-            ? { ...item, qty: item.qty + change }
+            ? {
+                ...item,
+                qty: item.qty + change
+              }
             : item
         )
         .filter((item) => item.qty > 0)
     );
+
   };
 
   const items = basket.map((item) => ({
-    ...products.find((product) => product.id === item.id),
-    qty: item.qty,
+    ...products.find(
+      (product) => product.id === item.id
+    ),
+    qty: item.qty
   }));
 
   const subtotal = items.reduce(
-    (sum, product) => sum + product.price * product.qty,
+    (sum, product) =>
+      sum + product.price * product.qty,
     0
   );
 
@@ -65,16 +86,24 @@ export function StoreProvider({ children }) {
   const total = subtotal + delivery;
 
   const placeOrder = () => {
+
     const order = {
-      id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      id: `ORD-${Math.floor(
+        1000 + Math.random() * 9000
+      )}`,
       shop: "Naivas Supermarket",
       status: "Processing",
       total,
-      date: new Date().toLocaleString(),
+      date: new Date().toLocaleString()
     };
 
-    setOrders((previous) => [order, ...previous]);
+    setOrders((previous) => [
+      order,
+      ...previous
+    ]);
+
     setLastOrder(order);
+
     setBasket([]);
 
     return order;
@@ -94,7 +123,7 @@ export function StoreProvider({ children }) {
         setPaymentMethod,
         add,
         update,
-        placeOrder,
+        placeOrder
       }}
     >
       {children}

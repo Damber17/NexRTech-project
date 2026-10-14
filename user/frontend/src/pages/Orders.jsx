@@ -46,35 +46,37 @@ export default function Orders() {
       </div>
 
       {filteredOrders.length > 0 ? (
-        filteredOrders.map((order) => (
-          <button
-            key={order.id}
-            className="panel order-card"
-            onClick={() =>
-              navigate(`/orders/${order.id}`)
-            }
-          >
-            <div className="row between">
-              <strong>{order.id}</strong>
+        <div className="orders-list">
+          {filteredOrders.map((order) => (
+            <button
+              key={order.id}
+              className="panel order-card"
+              onClick={() =>
+                navigate(`/orders/${order.id}`)
+              }
+            >
+              <div className="row between">
+                <strong>{order.id}</strong>
 
-              <span
-                className={`status ${order.status.toLowerCase()}`}
-              >
-                {order.status}
-              </span>
-            </div>
+                <span
+                  className={`status ${order.status.toLowerCase()}`}
+                >
+                  {order.status}
+                </span>
+              </div>
 
-            <p>{order.shop}</p>
+              <p>{order.shop}</p>
 
-            <div className="row between muted small">
-              <span>{order.date}</span>
+              <div className="row between muted small">
+                <span>{order.date}</span>
 
-              <b className="orange">
-                {money(order.total)}
-              </b>
-            </div>
-          </button>
-        ))
+                <b className="orange">
+                  {money(order.total)}
+                </b>
+              </div>
+            </button>
+          ))}
+        </div>
       ) : (
         <EmptyState
           icon="📦"

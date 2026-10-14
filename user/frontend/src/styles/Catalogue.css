@@ -1,16 +1,55 @@
 .catalogue-cover {
-  height: 145px;
+  height: 160px;
   width: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
+  margin-bottom: 4px;
 }
 
 .catalogue-search {
-  margin: 18px 0 24px;
+  margin: 16px 0 22px;
 }
 
+/* 2-column grid on mobile */
 .catalogue-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+/* ==============================
+   TABLET: 3 columns
+============================== */
+@media (min-width: 600px) {
+  .catalogue-cover {
+    height: 200px;
+  }
+
+  .catalogue-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+}
+
+/* ==============================
+   DESKTOP: 4 columns
+============================== */
+@media (min-width: 900px) {
+  .catalogue-cover {
+    height: 240px;
+  }
+
+  .catalogue-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ==============================
+   LARGE DESKTOP: 5 columns
+============================== */
+@media (min-width: 1200px) {
+  .catalogue-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

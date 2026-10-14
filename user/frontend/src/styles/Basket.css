@@ -1,34 +1,98 @@
 .basket-line {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .basket-line img {
-  height: 62px;
-  width: 62px;
+  height: 70px;
+  width: 70px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .basket-line-info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
+  min-width: 0;
+}
+
+.basket-line-info strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.basket-line-info small {
   font-size: 12px;
+  color: #888;
+}
+
+.basket-line-info b {
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .quantity-controls button {
   border: 0;
   background: #fff1dd;
   color: #df8200;
-  border-radius: 5px;
-  padding: 5px 8px;
+  border-radius: 6px;
+  padding: 6px 11px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 32px;
+  transition: background 0.15s;
+}
+
+.quantity-controls button:hover {
+  background: #ffe4b3;
+}
+
+.quantity-controls b {
+  font-size: 15px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .basket-line img {
+    height: 80px;
+    width: 80px;
+  }
+
+  .basket-line-info strong {
+    font-size: 15px;
+  }
+
+  .basket-line-info b {
+    font-size: 15px;
+  }
+}
+
+/* ==============================
+   DESKTOP: Constrain basket width
+============================== */
+@media (min-width: 900px) {
+  .basket-line img {
+    height: 86px;
+    width: 86px;
+  }
 }

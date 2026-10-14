@@ -1,12 +1,33 @@
-* {
+/* ==============================
+   RESET & BOX SIZING
+============================== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
-  margin: 0;
-  background: #f3f3f3;
   font-family: Arial, Helvetica, sans-serif;
-  color: #242424;
+  background: #f5f6f8;
+  color: #1a1a1a;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -25,110 +46,168 @@ button:disabled {
   cursor: not-allowed;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ==============================
+   APP SHELL
+============================== */
+
 .app-shell {
-  width: min(100%, 430px);
+  width: 100%;
   min-height: 100dvh;
-  margin: auto;
-  background: white;
-  position: relative;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 22px #00000008;
+  position: relative;
 }
 
-.phone-status {
-  height: 37px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 22px;
-  font-size: 11px;
-  font-weight: 600;
+/* Hide phone-only chrome on all screens */
+.phone-status,
+.home-indicator {
+  display: none;
 }
+
+/* ==============================
+   HEADER / SCREEN-HEADER
+============================== */
 
 .screen-header {
-  height: 52px;
+  width: 100%;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .screen-header > * {
-  min-width: 25px;
+  min-width: 28px;
 }
 
 .screen-header strong {
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .icon-btn {
   border: 0;
   background: transparent;
-  padding: 5px;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background 0.15s;
 }
+
+.icon-btn:hover {
+  background: #f5f5f5;
+}
+
+/* ==============================
+   MAIN CONTENT AREA
+============================== */
 
 .screen-main {
-  padding: 16px 20px 105px;
   flex: 1;
-  overflow: auto;
+  width: 100%;
+  padding: 16px 16px 100px;
+  overflow-x: hidden;
 }
 
+/* ==============================
+   BOTTOM NAVIGATION
+============================== */
+
 .bottom-nav {
-  position: absolute;
-  bottom: 12px;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 65px;
+  height: 64px;
   background: #fff;
   border-top: 1px solid #eee;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 200;
+  padding: 0 8px;
 }
 
 .bottom-nav button {
   border: 0;
   background: none;
-  color: #858585;
+  color: #888888;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 11px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: color 0.15s;
+  flex: 1;
+  max-width: 100px;
+}
+
+.bottom-nav button:hover {
+  color: #e48700;
 }
 
 .bottom-nav .selected,
-.orange {
+.bottom-nav button.selected {
   color: #e48700 !important;
+  font-weight: 600;
 }
 
-.home-indicator {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 105px;
-  height: 4px;
-  background: #161616;
-  border-radius: 8px;
-}
+/* ==============================
+   PRIMARY BUTTON
+============================== */
 
 .primary-btn {
   width: 100%;
-  min-height: 46px;
+  min-height: 50px;
   background: #e48700;
   color: white;
   border: 0;
-  border-radius: 7px;
-  font-size: 13px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 700;
-  padding: 10px 14px;
+  padding: 12px 20px;
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+
+.primary-btn:hover:not(:disabled) {
+  background: #cc7800;
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .primary-btn.red {
   background: #e12b31;
 }
+
+.primary-btn.red:hover:not(:disabled) {
+  background: #c4242a;
+}
+
+/* ==============================
+   UTILITY CLASSES
+============================== */
 
 .row {
   display: flex;
@@ -141,61 +220,127 @@ button:disabled {
 }
 
 .muted {
-  color: #898989;
+  color: #666666;
 }
 
 .small {
-  font-size: 12px;
+  font-size: 13px;
 }
+
+.orange {
+  color: #e48700 !important;
+}
+
+/* ==============================
+   PILL / TAG
+============================== */
 
 .pill {
   color: #e48700;
   background: #fff1db;
-  padding: 5px 7px;
-  border-radius: 4px;
-  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e48700;
+  background: #fff4e6;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* ==============================
+   PANEL / CARD
+============================== */
+
 .panel {
-  border: 1px solid #ededed;
-  border-radius: 11px;
-  padding: 15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 16px;
   background: white;
   margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 14px;
+}
+
+/* ==============================
+   FORM FIELDS
+============================== */
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 13px;
-  font-size: 12px;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
 
 .field input,
 .field select,
 .field textarea,
 .search-input {
-  border: 1px solid #e5e5e5;
-  background: #fcfcfc;
-  border-radius: 7px;
-  padding: 12px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 12px 14px;
   width: 100%;
-  outline-color: #e48700;
+  outline: none;
+  font-size: 14px;
+  color: #1a1a1a;
+  transition: border-color 0.15s;
 }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.search-input:focus {
+  border-color: #e48700;
+  background: #fff;
+}
+
+/* ==============================
+   DIVIDER
+============================== */
 
 .divider {
   height: 1px;
-  background: #eee;
+  background: #eeeeee;
   margin: 14px 0;
 }
+
+/* ==============================
+   SUMMARY LINE
+============================== */
 
 .summary-line {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 10px 0;
-  font-size: 13px;
+  font-size: 14px;
+  color: #333;
 }
+
+.summary-line span {
+  color: #555;
+}
+
+/* ==============================
+   EMPTY STATE
+============================== */
 
 .empty-state {
   display: flex;
@@ -203,104 +348,284 @@ button:disabled {
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  min-height: 58vh;
+  min-height: 55vh;
+  padding: 24px;
 }
 
 .empty-icon {
   background: #fff2d8;
   border-radius: 50%;
-  height: 72px;
-  width: 72px;
+  height: 80px;
+  width: 80px;
   display: grid;
   place-items: center;
-  font-size: 31px;
-  margin-bottom: 12px;
+  font-size: 34px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 0 10px #fffaf2;
 }
 
 .empty-state h2 {
-  font-size: 17px;
-  margin: 6px 0;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 6px;
+  color: #1a1a1a;
 }
 
 .empty-state p {
-  font-size: 12px;
-  color: #888;
-  max-width: 260px;
+  font-size: 14px;
+  color: #777;
+  max-width: 280px;
   line-height: 1.6;
 }
 
 .empty-state .primary-btn {
-  max-width: 260px;
-  margin-top: 16px;
+  max-width: 280px;
+  margin-top: 20px;
 }
+
+/* ==============================
+   SHOP CARD
+============================== */
 
 .shop-card {
   display: block;
   text-align: left;
   width: 100%;
   padding: 0;
-  border: 1px solid #eee;
+  border: 1px solid #e8e8e8;
   background: white;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  margin-bottom: 17px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.shop-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .shop-card img {
   width: 100%;
-  height: 130px;
+  height: 150px;
   object-fit: cover;
 }
 
 .shop-info {
-  padding: 12px;
+  padding: 12px 14px;
 }
 
 .shop-info strong {
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .shop-info .muted {
-  margin-top: 7px;
+  margin-top: 6px;
+  font-size: 13px;
 }
 
+/* ==============================
+   PRODUCT CARD
+============================== */
+
 .product-card {
-  border: 1px solid #eee;
+  border: 1px solid #e8e8e8;
   background: #fff;
-  border-radius: 9px;
+  border-radius: 12px;
   text-align: left;
-  padding: 8px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   min-width: 0;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .product-card img {
   width: 100%;
-  height: 110px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .product-card strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.product-card .muted {
   font-size: 12px;
 }
 
 .product-card b {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.card-title {
-  font-size: 15px;
-  margin: 0 0 14px;
+/* ==============================
+   TEXT ACTION BUTTON
+============================== */
+
+.text-action {
+  background: none;
+  border: 0;
+  color: #777;
+  margin-top: 16px;
+  text-decoration: underline;
+  font-size: 14px;
+  padding: 8px;
 }
 
-.tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: #e48700;
-  background: #fff4e6;
-  padding: 4px 7px;
-  border-radius: 5px;
+.text-action:hover {
+  color: #555;
+}
+
+/* ==============================
+   TABLET BREAKPOINT (≥ 600px)
+============================== */
+
+@media (min-width: 600px) {
+  .screen-main {
+    padding: 24px 32px 100px;
+  }
+
+  .screen-header {
+    padding: 0 32px;
+    min-height: 60px;
+  }
+
+  .screen-header strong {
+    font-size: 18px;
+  }
+
+  .product-card img {
+    height: 140px;
+  }
+
+  .shop-card img {
+    height: 170px;
+  }
+
+  .primary-btn {
+    font-size: 16px;
+  }
+
+  .card-title {
+    font-size: 17px;
+  }
+
+  .summary-line {
+    font-size: 15px;
+  }
+
+  .field {
+    font-size: 15px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea,
+  .search-input {
+    font-size: 15px;
+  }
+}
+
+/* ==============================
+   DESKTOP BREAKPOINT (≥ 900px)
+============================== */
+
+@media (min-width: 900px) {
+  .app-shell {
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Sticky top nav on desktop */
+  .bottom-nav {
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 1px solid #eeeeee;
+    height: 68px;
+    order: -1;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 40px;
+  }
+
+  .bottom-nav button {
+    flex-direction: row;
+    font-size: 14px;
+    font-weight: 500;
+    gap: 8px;
+    padding: 10px 18px;
+    max-width: 160px;
+  }
+
+  .screen-header {
+    padding: 0 40px;
+    min-height: 64px;
+  }
+
+  .screen-main {
+    padding: 28px 40px 80px;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .screen-header strong {
+    font-size: 19px;
+  }
+
+  .product-card img {
+    height: 160px;
+  }
+
+  .shop-card img {
+    height: 200px;
+  }
+
+  .shop-info strong {
+    font-size: 16px;
+  }
+
+  .primary-btn {
+    font-size: 16px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+}
+
+/* ==============================
+   LARGE DESKTOP (≥ 1200px)
+============================== */
+
+@media (min-width: 1200px) {
+  .bottom-nav {
+    gap: 20px;
+  }
+
+  .bottom-nav button {
+    font-size: 15px;
+    padding: 10px 22px;
+  }
 }

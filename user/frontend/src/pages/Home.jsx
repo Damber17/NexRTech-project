@@ -44,13 +44,15 @@ export default function Home() {
 
       <h3 className="card-title">Shops</h3>
 
-      {filteredShops.map((shop) => (
-        <ShopCard
-          key={shop.id}
-          shop={shop}
-          onClick={() => navigate("/catalogue")}
-        />
-      ))}
+      <div className="home-shops-list">
+        {filteredShops.map((shop) => (
+          <ShopCard
+            key={shop.id}
+            shop={shop}
+            onClick={() => navigate("/catalogue")}
+          />
+        ))}
+      </div>
 
       {filteredShops.length === 0 && (
         <p className="muted small">No shops found.</p>

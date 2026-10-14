@@ -18,31 +18,33 @@ export default function TransactionHistory() {
   return (
     <Screen title="Transactions" back>
       {orders.length > 0 ? (
-        orders.map((order) => (
-          <button
-            key={order.id}
-            className="transaction-row panel"
-            onClick={() =>
-              navigate(`/transactions/${order.id}`)
-            }
-          >
-            <div className="transaction-icon">
-              ↗
-            </div>
+        <div className="transaction-list">
+          {orders.map((order) => (
+            <button
+              key={order.id}
+              className="transaction-row panel"
+              onClick={() =>
+                navigate(`/transactions/${order.id}`)
+              }
+            >
+              <div className="transaction-icon">
+                ↗
+              </div>
 
-            <div>
-              <strong>{order.shop}</strong>
+              <div>
+                <strong>{order.shop}</strong>
 
-              <p className="muted small">
-                {order.date} · {order.id}
-              </p>
-            </div>
+                <p className="muted small">
+                  {order.date} · {order.id}
+                </p>
+              </div>
 
-            <b className="orange">
-              {money(order.total)}
-            </b>
-          </button>
-        ))
+              <b className="orange">
+                {money(order.total)}
+              </b>
+            </button>
+          ))}
+        </div>
       ) : (
         <EmptyState
           icon="💳"

@@ -1,11 +1,52 @@
 .failed-result {
-  padding-top: 65px;
+  padding-top: 48px;
+  text-align: center;
 }
 
 .failed-result > svg {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .failed-result h2 {
+  font-size: 22px;
+  font-weight: 700;
   color: #df2935;
+  margin: 0 0 8px;
+}
+
+.failed-result p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 0 auto 20px;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .failed-result {
+    padding-top: 64px;
+  }
+
+  .failed-result h2 {
+    font-size: 26px;
+  }
+
+  .failed-result p {
+    font-size: 15px;
+    max-width: 360px;
+  }
+}
+
+/* ==============================
+   DESKTOP
+============================== */
+@media (min-width: 900px) {
+  .failed-result {
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 80px;
+  }
 }

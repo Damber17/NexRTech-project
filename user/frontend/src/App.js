@@ -7,7 +7,6 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import { StoreProvider } from "./context/StoreContext";
 
 // Pages
 import Home from "./pages/Home";
@@ -30,6 +29,8 @@ import TransactionDetails from "./pages/TransactionDetails";
 import Profile from "./pages/Profile";
 import EmptyBasket from "./pages/EmptyBasket";
 import EmptyOrders from "./pages/EmptyOrders";
+
+import { StoreProvider } from "./context/StoreContext";
 
 function App() {
   return (

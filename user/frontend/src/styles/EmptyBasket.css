@@ -1,3 +1,7 @@
 .empty-state .empty-icon {
-  box-shadow: 0 0 0 8px #fffaf2;
+  box-shadow: 0 0 0 10px #fffaf2;
+}
+
+.empty-state h2 {
+  font-weight: 700;
 }

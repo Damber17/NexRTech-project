@@ -1,29 +1,33 @@
 .tracking-step {
   display: flex;
-  gap: 14px;
-  min-height: 68px;
-  border-left: 2px solid #eee;
-  margin-left: 12px;
-  padding-left: 20px;
+  gap: 16px;
+  min-height: 72px;
+  border-left: 2.5px solid #e0e0e0;
+  margin-left: 14px;
+  padding-left: 24px;
   position: relative;
 }
 
 .tracking-step:last-child {
   border: 0;
+  min-height: auto;
+  padding-bottom: 0;
 }
 
 .tracking-dot {
   position: absolute;
-  left: -15px;
-  top: -2px;
-  width: 28px;
-  height: 28px;
+  left: -17px;
+  top: 0;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #eee;
-  color: #888;
-  font-size: 12px;
+  background: #eeeeee;
+  color: #888888;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .tracking-step.done .tracking-dot {
@@ -31,11 +35,58 @@
   color: white;
 }
 
+.tracking-step.done {
+  border-color: #e48700;
+}
+
+.tracking-step-content {
+  padding-top: 4px;
+  padding-bottom: 16px;
+}
+
 .tracking-step strong {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .tracking-step p {
-  font-size: 11px;
-  color: #999;
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .tracking-step strong {
+    font-size: 15px;
+  }
+
+  .tracking-step p {
+    font-size: 14px;
+  }
+
+  .tracking-dot {
+    width: 34px;
+    height: 34px;
+    left: -18px;
+  }
+}
+
+/* ==============================
+   DESKTOP
+============================== */
+@media (min-width: 900px) {
+  .tracking-step {
+    min-height: 80px;
+  }
+
+  .tracking-step strong {
+    font-size: 16px;
+  }
 }
