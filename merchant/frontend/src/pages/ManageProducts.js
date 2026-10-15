@@ -1,8 +1,32 @@
-// Page: ManageProducts
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Search, Upload, Download, Eye, Pencil, MoreHorizontal, SlidersHorizontal, Columns3, Table2 } from 'lucide-react';
+import { getProducts, setProducts as persist, downloadCsv } from '../data/catalog';
+import '../styles/catalog.css';
 
-const ManageProducts = () => {
-  return <div>ManageProducts</div>;
-};
-
-export default ManageProducts;
+export default function ManageProducts(){
+  const navigate=useNavigate();
+  const [products,setList]=useState(getProducts);
+  const [tab,setTab]=useState('All products');
+  const [search,setSearch]=useState('');
+  const [category,setCategory]=useState('');
+  const [stock,setStock]=useState('');
+  const [page,setPage]=useState(1);
+  const [checked,setChecked]=useState([]);
+  const [editing,setEditing]=useState(null);
+  const [more,setMore]=useState(false);
+  const save=list=>{setList(list);persist(list);};
+  const filtered=useMemo(()=>products.filter(p=>(tab==='All products'||p.status===tab.replace(/s$/,''))&&(p.name+' '+p.sku).toLowerCase().includes(search.toLowerCase())&&(!category||p.category===category)&&(!stock||(stock==='Low stock'?p.stock_qty>0&&p.stock_qty<10:stock==='Out of stock'?p.stock_qty===0:p.stock_qty>=10))),[products,tab,search,category,stock]);
+  const visible=filtered.slice((page-1)*10,page*10);
+  async function importCsv(e){const file=e.target.files?.[0];if(!file)return;const lines=(await file.text()).trim().split(/\r?\n/).slice(1);const added=lines.map((line,i)=>{const [name,sku,category,price,stock_qty,status]=line.split(',').map(s=>s.trim().replace(/^"|"$/g,''));return {id:String(Date.now()+i),name,sku,category,price:Number(price)||0,stock_qty:Number(stock_qty)||0,status:status||'Draft',product_image:'',description:''};}).filter(p=>p.name);save([...products,...added]);e.target.value='';}
+  return <div className="catalog-page">
+    <div className="catalog-heading"><div><h1>Products</h1><p>One catalog. Every channel. Manage your products in one place.</p></div><div className="catalog-actions"><label className="catalog-button"><Upload size={15}/> Import<input hidden type="file" accept=".csv" onChange={importCsv}/></label><button className="catalog-button" onClick={()=>downloadCsv(filtered)}><Download size={15}/> Export</button><button className="catalog-button green" onClick={()=>navigate('/merchant/products/add')}><Plus size={16}/> Add product</button></div></div>
+    <div className="catalog-stats"><strong>{products.length}</strong><span>Total products</span><strong>{products.filter(p=>p.status==='Published').length}</strong><span>Published</span><strong>{products.filter(p=>p.status==='Draft').length}</strong><span>Drafts</span><strong className="orange">{products.filter(p=>p.stock_qty>0&&p.stock_qty<10).length}</strong><span>Low stock</span><small>◉ Catalog synced 2 minutes ago</small></div>
+    <div className="catalog-panel"><div className="catalog-tabs">{['All products','Published','Drafts','Archived'].map(t=><button key={t} className={tab===t?'active':''} onClick={()=>{setTab(t);setPage(1);}}>{t} <small>{t==='All products'?products.length:products.filter(p=>p.status===t.replace(/s$/,'')).length}</small></button>)}</div>
+    <div className="catalog-filters"><label className="catalog-search"><Search size={15}/><input placeholder="Search by product name or SKU  ⌘ K" value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label><select value={category} onChange={e=>{setCategory(e.target.value);setPage(1);}}><option value="">⌄ Category</option>{[...new Set(products.map(p=>p.category))].map(c=><option key={c}>{c}</option>)}</select><select value={stock} onChange={e=>setStock(e.target.value)}><option value="">⌄ Stock status</option><option>In stock</option><option>Low stock</option><option>Out of stock</option></select><button className="catalog-button" onClick={()=>setMore(!more)}><SlidersHorizontal size={14}/> More filters</button><div className="catalog-fill"/><button className="catalog-button"><Columns3 size={14}/> Columns</button><button className="catalog-button"><Table2 size={14}/> Spreadsheet</button></div>{more&&<div className="catalog-info">{filtered.length} matching products</div>}
+    <div className="catalog-scroll"><table className="catalog-table"><thead><tr><th><input type="checkbox" checked={visible.length>0&&visible.every(p=>checked.includes(p.id))} onChange={e=>setChecked(e.target.checked?visible.map(p=>p.id):[])}/></th><th>#</th><th>Product ↓</th><th>SKU</th><th>Category</th><th>Price · KES</th><th>Available</th><th>Status</th><th>Actions</th></tr></thead><tbody>{visible.map((p,i)=><tr key={p.id} onClick={()=>navigate(`/merchant/products/${p.id}`)}><td onClick={e=>e.stopPropagation()}><input type="checkbox" checked={checked.includes(p.id)} onChange={e=>setChecked(e.target.checked?[...checked,p.id]:checked.filter(x=>x!==p.id))}/></td><td className="subtle">{(page-1)*10+i+1}</td><td><div className="catalog-product"><img src={p.product_image||'https://placehold.co/48'} alt=""/><div><b>{p.name}</b><small>{p.description||'Online store · POS · Marketplace'}</small></div></div></td><td className="subtle">{p.sku}</td><td>{p.category}</td><td><span className="catalog-price">KES {Number(p.price).toFixed(2)}</span></td><td className={p.stock_qty<10?'catalog-low':''}>{p.stock_qty}<small>{p.stock_qty===0?'Out of stock':p.stock_qty<10?'Low stock':''}</small></td><td><span className={'catalog-status '+p.status.toLowerCase()}>• {p.status}</span></td><td><div className="catalog-icons"><button title="View" onClick={(e)=>{e.stopPropagation();navigate(`/merchant/products/${p.id}`);}}><Eye size={15}/></button><button title="Edit" onClick={(e)=>{e.stopPropagation();navigate(`/merchant/products/${p.id}`);}}><Pencil size={15}/></button><button title="Archive / Publish" onClick={(e)=>{e.stopPropagation();save(products.map(x=>x.id===p.id?{...x,status:x.status==='Archived'?'Published':'Archived'}:x));}}><MoreHorizontal size={17}/></button></div></td></tr>)}</tbody></table></div>
+    <div className="catalog-pagination"><span>Showing {filtered.length?(page-1)*10+1:0}–{Math.min(page*10,filtered.length)} of {filtered.length} products</span><div>10 per page <button disabled={page===1} onClick={()=>setPage(page-1)}>Previous</button><b>{page}</b><button disabled={page*10>=filtered.length} onClick={()=>setPage(page+1)}>Next</button></div></div></div>
+    <div className="catalog-footer"><span>Double-click a price to edit · Use row actions to view or manage a product</span><span>Store currency: KES</span></div>
+    {editing&&<div className="catalog-shade" onClick={()=>setEditing(null)}><form className="catalog-modal" onClick={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();setEditing(null);}}><h3>Product details</h3>{(()=>{const p=products.find(x=>x.id===editing);return p&&<>{[['name','Product name'],['price','Price (KES)'],['stock_qty','Available']].map(([key,label])=><label key={key}>{label}<input type={key==='name'?'text':'number'} value={p[key]} onChange={e=>save(products.map(x=>x.id===p.id?{...x,[key]:key==='name'?e.target.value:Number(e.target.value)}:x))}/></label>)}</>})()}<div><button type="button" onClick={()=>setEditing(null)}>Cancel</button><button className="green" type="submit">Save</button></div></form></div>}
+  </div>;
+}

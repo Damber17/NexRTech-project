@@ -1,8 +1,19 @@
-// Page: AddProduct
-import React from 'react';
-
-const AddProduct = () => {
-  return <div>AddProduct</div>;
-};
-
-export default AddProduct;
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Trash2, Save, Upload, ImagePlus, ArrowLeft } from 'lucide-react';
+import { getProducts, setProducts, downloadCsv } from '../data/catalog';
+import '../styles/catalog.css';
+const blank=()=>({id:String(Date.now()+Math.random()),name:'',sku:'',category:'',price:'',description:'',stock_qty:'',production_date:'',expiry_date:'',product_image:'',status:'Draft'});
+export default function AddProduct(){
+ const navigate=useNavigate();
+ const [rows,setRows]=useState(Array.from({length:5},blank));
+ const [saved,setSaved]=useState(false);
+ const update=(id,key,value)=>{setRows(prev=>prev.map(r=>r.id===id?{...r,[key]:value}:r));setSaved(false);};
+ const valid=rows.filter(r=>r.name.trim()&&r.sku.trim()&&r.price!==''&&r.stock_qty!=='');
+ function submit(status){if(!valid.length){alert('Enter at least one product with name, SKU, price and quantity.');return;}const existing=getProducts();const items=valid.map(r=>({...r,price:Number(r.price),stock_qty:Number(r.stock_qty),category:r.category||'Produce',status}));setProducts([...existing,...items]);if(status==='Draft'){setSaved(true);}else navigate('/merchant/products');}
+ async function importFile(e){const f=e.target.files?.[0];if(!f)return;const lines=(await f.text()).trim().split(/\r?\n/).slice(1);const added=lines.map((line,i)=>{const [name,sku,category,price,quantity]=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));return {...blank(),id:String(Date.now()+i),name,sku,category,price,stock_qty:quantity};}).filter(x=>x.name);setRows([...rows.filter(r=>r.name),...added]);e.target.value='';}
+ return <div className="catalog-page add-catalog"><button className="catalog-back" onClick={()=>navigate('/merchant/products')}><ArrowLeft size={15}/> All products</button><div className="catalog-heading"><div><div className="add-title"><h1>Add products</h1><span>• {saved?'Draft saved':'Unsaved draft'}</span></div><p>Enter multiple products at once. Fill each row, then publish to your chosen channels.</p></div><div className="catalog-actions"><button className="catalog-button" onClick={()=>navigate('/merchant/products')}>Discard all</button><button className="catalog-button" onClick={()=>submit('Draft')}><Save size={14}/> Save draft</button><button className="catalog-button green" onClick={()=>submit('Published')}><Plus size={15}/> Add &amp; publish all</button></div></div>
+ <div className="add-table-wrap"><table className="add-table"><thead><tr>{['#','Image','Product name *','SKU *','Category','Selling price *','Description','Quantity','Production date','Expiry date','Status',''].map(t=><th key={t}>{t}</th>)}</tr></thead><tbody>{rows.map((r,i)=><tr key={r.id}><td>{i+1}</td><td><label className="add-image">{r.product_image?<img src={r.product_image} alt=""/>:<ImagePlus size={17}/>}<input hidden type="file" accept="image/*" onChange={e=>{const f=e.target.files?.[0];if(f){const reader=new FileReader();reader.onload=()=>update(r.id,'product_image',reader.result);reader.readAsDataURL(f);}}}/></label></td><td><input placeholder="Product name" value={r.name} onChange={e=>update(r.id,'name',e.target.value)}/></td><td><input placeholder="SKU" value={r.sku} onChange={e=>update(r.id,'sku',e.target.value)}/></td><td><select value={r.category} onChange={e=>update(r.id,'category',e.target.value)}><option value="">Category</option>{['Produce','Dairy','Bakery','Pantry','Groceries'].map(c=><option key={c}>{c}</option>)}</select></td><td><input type="number" min="0" step=".01" placeholder="KES 0.00" value={r.price} onChange={e=>update(r.id,'price',e.target.value)}/></td><td><textarea placeholder="Description" rows="2" value={r.description} onChange={e=>update(r.id,'description',e.target.value)}/></td><td><input type="number" min="0" placeholder="0" value={r.stock_qty} onChange={e=>update(r.id,'stock_qty',e.target.value)}/></td><td><input type="date" value={r.production_date} onChange={e=>update(r.id,'production_date',e.target.value)}/></td><td><input type="date" value={r.expiry_date} onChange={e=>update(r.id,'expiry_date',e.target.value)}/></td><td>{r.name?<span className="add-badge">ADD</span>:'—'}</td><td><button className="add-trash" disabled={rows.length===1} onClick={()=>setRows(rows.filter(x=>x.id!==r.id))}><Trash2 size={15}/></button></td></tr>)}</tbody></table><div className="add-table-bottom"><button onClick={()=>setRows([...rows,blank()])}><Plus size={14}/> Add row</button><span>{rows.length} rows · {rows.filter(r=>r.name).length} products entered</span></div></div>
+ <div className="catalog-import"><div><b>♧ &nbsp; Import from CSV or spreadsheet</b><p>Upload a .csv file to populate multiple rows at once. Download our template to get started.</p></div><div><label className="catalog-button">Upload CSV<input type="file" accept=".csv" hidden onChange={importFile}/></label><button onClick={()=>downloadCsv([{name:'',sku:'',category:'',price:'',stock_qty:'',status:''}])}>Download template</button></div></div>
+ </div>;
+}
