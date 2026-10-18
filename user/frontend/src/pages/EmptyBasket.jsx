@@ -6,18 +6,18 @@ import {
   EmptyState,
 } from "../components/common/UI";
 
-import "../styles/EmptyOrders.css";
+import "../styles/EmptyBasket.css";
 
-export default function EmptyOrders() {
+export default function EmptyBasket() {
   const navigate = useNavigate();
 
   return (
-    <Screen title="My Orders">
+    <Screen title="My Basket" back>
       <EmptyState
-        icon="📦"
-        title="No orders yet"
-        description="Once you place an order, it will appear here."
-        action="Start Shopping"
+        icon="🧺"
+        title="Your basket is empty"
+        description="Explore products and add your favorites to get started."
+        action="Browse Merchants"
         onAction={() => navigate("/home")}
       />
     </Screen>

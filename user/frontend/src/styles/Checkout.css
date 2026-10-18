@@ -18,11 +18,37 @@
   background: #fffaf2;
 }
 
+.payment-choice.selected {
+  border-color: #e48700;
+  background: #fffaf2;
+}
+
 .payment-choice input[type="radio"] {
   accent-color: #e48700;
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+}
+
+.payment-choice div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.payment-choice strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.payment-choice small {
+  font-size: 13px;
+}
+
+.payment-choice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* ==============================

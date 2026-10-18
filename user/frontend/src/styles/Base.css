@@ -475,6 +475,23 @@ img {
   font-weight: 700;
 }
 
+.product-card .aud-price {
+  font-size: 12px;
+  font-weight: 400;
+  color: #888;
+  margin-left: 4px;
+}
+
+.product-card.out-of-stock {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.product-card.out-of-stock:hover {
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
 /* ==============================
    TEXT ACTION BUTTON
 ============================== */

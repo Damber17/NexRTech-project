@@ -70,7 +70,27 @@
   white-space: nowrap;
 }
 
-.status.delivered {
+.status.payment_requested {
+  background: #fff3db;
+  color: #e48700;
+}
+
+.status.paid {
+  background: #e9f8ed;
+  color: #1d8c43;
+}
+
+.status.preparing {
+  background: #e8f0ff;
+  color: #2563eb;
+}
+
+.status.ready {
+  background: #e9f8ed;
+  color: #1d8c43;
+}
+
+.status.received {
   background: #e9f8ed;
   color: #1d8c43;
 }
@@ -80,9 +100,9 @@
   color: #d12c35;
 }
 
-.status.processing {
-  background: #e8f0ff;
-  color: #2563eb;
+.status.expired {
+  background: #ffebeb;
+  color: #d12c35;
 }
 
 /* ==============================

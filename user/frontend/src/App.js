@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   BrowserRouter,
   Routes,
@@ -7,8 +6,9 @@ import {
   Navigate,
 } from "react-router-dom";
 
-
 // Pages
+import Login from "./pages/Login";
+import VerifyPin from "./pages/VerifyPin";
 import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
 import ProductDetails from "./pages/ProductDetails";
@@ -45,12 +45,22 @@ function App() {
           />
 
           <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/verify-pin"
+            element={<VerifyPin />}
+          />
+
+          <Route
             path="/home"
             element={<Home />}
           />
 
           <Route
-            path="/catalogue"
+            path="/catalogue/:merchantId"
             element={<Catalogue />}
           />
 
