@@ -1,0 +1,90 @@
+.transaction-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  width: 100%;
+  transition: box-shadow 0.15s;
+}
+
+.transaction-row:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+}
+
+.transaction-row > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-row strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-row p {
+  font-size: 13px;
+  color: #888;
+  margin: 3px 0 0;
+}
+
+.transaction-row b {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.transaction-icon {
+  background: #fff3e2;
+  color: #e48700;
+  border-radius: 50%;
+  height: 44px;
+  width: 44px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .transaction-row strong {
+    font-size: 15px;
+  }
+
+  .transaction-row p {
+    font-size: 14px;
+  }
+
+  .transaction-row b {
+    font-size: 15px;
+  }
+
+  .transaction-icon {
+    height: 50px;
+    width: 50px;
+    font-size: 22px;
+  }
+}
+
+/* ==============================
+   DESKTOP: 2 column list
+============================== */
+@media (min-width: 900px) {
+  .transaction-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .transaction-list .panel {
+    margin-bottom: 0;
+  }
+}

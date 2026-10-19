@@ -1,0 +1,71 @@
+/* Shared result layout used by success, failed, pending */
+.payment-result {
+  text-align: center;
+  padding-top: 48px;
+  padding-bottom: 24px;
+}
+
+.payment-result h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 8px 0;
+}
+
+.payment-result p {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.7;
+  max-width: 320px;
+  margin: 0 auto 16px;
+}
+
+/* Emoji / icon symbol circle */
+.result-symbol {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 20px;
+  font-size: 48px;
+}
+
+.result-symbol.pending {
+  color: #e48700;
+  background: #fff3d8;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .payment-result {
+    padding-top: 60px;
+  }
+
+  .payment-result h2 {
+    font-size: 24px;
+  }
+
+  .payment-result p {
+    font-size: 15px;
+  }
+
+  .result-symbol {
+    width: 108px;
+    height: 108px;
+    font-size: 54px;
+  }
+}
+
+/* ==============================
+   DESKTOP
+============================== */
+@media (min-width: 900px) {
+  .payment-result {
+    max-width: 520px;
+    margin: 0 auto;
+    padding-top: 80px;
+  }
+}

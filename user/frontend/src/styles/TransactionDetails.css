@@ -1,0 +1,83 @@
+.transaction-receipt {
+  text-align: center;
+  padding: 40px 0 24px;
+}
+
+.receipt-symbol {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #eaf8ee;
+  color: #1d9c4c;
+  font-size: 34px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 0 10px #f2fcf5;
+}
+
+.transaction-receipt h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.transaction-receipt p {
+  font-size: 14px;
+  color: #888;
+}
+
+/* Detail rows in transaction panel */
+.transaction-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.transaction-detail-row span {
+  color: #666;
+}
+
+.transaction-detail-row strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* ==============================
+   TABLET
+============================== */
+@media (min-width: 600px) {
+  .receipt-symbol {
+    width: 84px;
+    height: 84px;
+    font-size: 40px;
+  }
+
+  .transaction-receipt h2 {
+    font-size: 30px;
+  }
+
+  .transaction-receipt p {
+    font-size: 15px;
+  }
+
+  .transaction-detail-row {
+    font-size: 15px;
+  }
+}
+
+/* ==============================
+   DESKTOP: centered card
+============================== */
+@media (min-width: 900px) {
+  .transaction-receipt {
+    padding-top: 56px;
+  }
+
+  .transaction-receipt h2 {
+    font-size: 34px;
+  }
+}

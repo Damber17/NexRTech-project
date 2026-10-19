@@ -1,0 +1,108 @@
+.home-welcome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 24px;
+}
+
+.home-welcome img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid #ffe0a0;
+}
+
+.profile-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff1db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e48700;
+  flex-shrink: 0;
+  border: 2px solid #ffe0a0;
+}
+
+.home-welcome div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-welcome small {
+  font-size: 13px;
+  color: #888;
+  font-weight: 400;
+}
+
+.home-welcome strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Search bar */
+.search-wrap {
+  position: relative;
+  margin: 0 0 28px;
+}
+
+.search-wrap svg {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.search-wrap input {
+  padding-left: 42px;
+  font-size: 14px;
+}
+
+/* Shop list container */
+.home-shops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ==============================
+   TABLET: 2 columns for shops
+============================== */
+@media (min-width: 600px) {
+  .home-welcome strong {
+    font-size: 20px;
+  }
+
+  .home-welcome img {
+    width: 54px;
+    height: 54px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-shops-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .home-shops-list .shop-card {
+    margin-bottom: 0;
+  }
+}
+
+/* ==============================
+   DESKTOP: 3 columns for shops
+============================== */
+@media (min-width: 1100px) {
+  .home-shops-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

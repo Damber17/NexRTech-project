@@ -1,0 +1,75 @@
+.payment-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  margin: 8px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.payment-choice:hover {
+  border-color: #e48700;
+  background: #fffaf2;
+}
+
+.payment-choice.selected {
+  border-color: #e48700;
+  background: #fffaf2;
+}
+
+.payment-choice input[type="radio"] {
+  accent-color: #e48700;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.payment-choice div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.payment-choice strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.payment-choice small {
+  font-size: 13px;
+}
+
+.payment-choice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ==============================
+   TABLET / DESKTOP
+============================== */
+@media (min-width: 600px) {
+  .payment-choice {
+    font-size: 15px;
+    padding: 15px 18px;
+  }
+}
+
+@media (min-width: 900px) {
+  /* On desktop, show payment options side-by-side */
+  .payment-options-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .payment-options-grid .payment-choice {
+    margin: 0;
+  }
+}
