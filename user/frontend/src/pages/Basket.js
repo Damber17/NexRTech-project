@@ -15,6 +15,7 @@ export default function Basket() {
   const navigate = useNavigate();
   const { basket, updateQuantity } = useStore();
   const [copied, setCopied] = useState(false);
+  const merchantId = basket?.merchant?._id || basket?.merchant?.id;
 
   if (!basket || !basket.items || basket.items.length === 0) {
     return (
@@ -104,6 +105,13 @@ export default function Basket() {
           </div>
         ))}
       </div>
+
+      <PrimaryButton
+        onClick={() => navigate(merchantId ? `/catalogue/${merchantId}` : "/home")}
+        style={{ marginBottom: "20px" }}
+      >
+        Add items +
+      </PrimaryButton>
 
       <div className="panel order-summary-panel">
         <h3 className="card-title">Order Summary</h3>

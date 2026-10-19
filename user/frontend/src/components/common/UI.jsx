@@ -7,6 +7,7 @@ import {
   ClipboardList,
   ArrowLeft,
   MapPin,
+  Plus,
 } from "lucide-react";
 
 import { useStore } from "../../context/StoreContext";
@@ -171,45 +172,53 @@ export function ShopCard({ shop, onClick }) {
   );
 }
 
-export function ProductCard({ product, onClick }) {
+export function ProductCard({ product, onClick, onAddToBasket }) {
   const displayPrice = product.price?.kes || product.price;
   const displayAud = product.price?.aud;
   const isOutOfStock = product.in_stock === false;
 
   return (
-    <button 
+    <div
       className={`product-card ${isOutOfStock ? 'out-of-stock' : ''}`} 
-      onClick={onClick}
-      disabled={isOutOfStock}
-      style={{ position: "relative" }}
     >
-      <div style={{ position: "relative", width: "100%" }}>
-        <img src={product.image} alt={product.name} />
-        {isOutOfStock && (
-          <span 
-            style={{ 
-              position: "absolute", 
-              top: 6, 
-              left: 6, 
-              background: "rgba(0,0,0,0.7)", 
-              color: "white", 
-              fontSize: "10px", 
-              fontWeight: 700, 
-              padding: "2px 6px", 
-              borderRadius: "4px" 
-            }}
-          >
-            Out of Stock
-          </span>
-        )}
-      </div>
+      <button
+        type="button"
+        className="product-card-main"
+        onClick={onClick}
+        disabled={isOutOfStock}
+      >
+        <div className="product-card-image">
+          <img src={product.image} alt={product.name} />
+          {isOutOfStock && <span className="product-card-stock-label">Out of Stock</span>}
+        </div>
 
-      <strong>{product.name}</strong>
-      <span className="muted small">{product.unit}</span>
-      <b className="orange">
-        KSh {displayPrice}
-        {displayAud && <span className="aud-price">≈ AUD {displayAud}</span>}
-      </b>
-    </button>
+        <strong>{product.name}</strong>
+        <span className="muted small">{product.unit}</span>
+      </button>
+
+      <div className="product-card-footer">
+        <button
+          type="button"
+          className="product-card-price"
+          onClick={onClick}
+          disabled={isOutOfStock}
+        >
+          <b className="orange">
+            KSh {displayPrice}
+            {displayAud && <span className="aud-price">≈ AUD {displayAud}</span>}
+          </b>
+        </button>
+        <button
+          type="button"
+          className="product-card-add"
+          onClick={() => onAddToBasket?.()}
+          disabled={isOutOfStock}
+          aria-label={`Add ${product.name} to basket`}
+          title="Add to basket"
+        >
+          <Plus size={21} strokeWidth={2.5} />
+        </button>
+      </div>
+    </div>
   );
 }

@@ -13,6 +13,8 @@ import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
 import ProductDetails from "./pages/ProductDetails";
 import Basket from "./pages/Basket";
+import AddBasketItem from "./pages/AddBasketItem";
+import CreateBasket from "./pages/CreateBasket";
 import Checkout from "./pages/Checkout";
 
 import PaymentPending from "./pages/PaymentPending";
@@ -72,6 +74,16 @@ function App() {
           <Route
             path="/basket"
             element={<Basket />}
+          />
+
+          <Route
+            path="/basket/add"
+            element={<AddBasketItem />}
+          />
+
+          <Route
+            path="/basket/create"
+            element={<CreateBasket />}
           />
 
           <Route

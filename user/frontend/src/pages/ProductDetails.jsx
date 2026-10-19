@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MapPin, Check } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import {
   Screen,
@@ -13,14 +13,10 @@ import "../styles/ProductDetails.css";
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, merchants, addToBasket } = useStore();
+  const { products, merchants, beginAddToBasket } = useStore();
 
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
-
-  const product = 
-    products.find((p) => String(p._id || p.id) === String(id)) ||
-    products[0];
+  const product = products.find((p) => String(p._id || p.id) === String(id));
 
   const merchant = 
     merchants.find((m) => String(m._id || m.id) === String(product?.merchant_id)) ||
@@ -40,15 +36,11 @@ export default function ProductDetails() {
   const unitPriceAud = parseFloat(product.price?.aud || 0);
 
   const totalPriceKes = (unitPriceKes * quantity).toFixed(2);
-  const totalPriceAud = (unitPriceAud * quantity).toFixed(2);
 
   const handleAddToBasket = () => {
     if (isOutOfStock) return;
-    addToBasket(product, quantity, merchant);
-    setAdded(true);
-    setTimeout(() => {
-      navigate("/basket");
-    }, 350);
+    beginAddToBasket(product, quantity, merchant);
+    navigate("/basket/add");
   };
 
   return (
@@ -123,8 +115,6 @@ export default function ProductDetails() {
       >
         {isOutOfStock 
           ? "Out of Stock" 
-          : added 
-          ? "Added to Basket ✓"
           : `Add to Basket · KSh ${totalPriceKes}`}
       </PrimaryButton>
     </Screen>

@@ -10,7 +10,7 @@ import "../styles/Catalogue.css";
 export default function Catalogue() {
   const navigate = useNavigate();
   const { merchantId } = useParams();
-  const { merchants, products } = useStore();
+  const { merchants, products, beginAddToBasket } = useStore();
   const [query, setQuery] = useState("");
 
   const currentMerchant = 
@@ -69,6 +69,10 @@ export default function Catalogue() {
               in_stock: product.in_stock
             }}
             onClick={() => navigate(`/product/${product._id || product.id}`)}
+            onAddToBasket={() => {
+              beginAddToBasket(product, 1, currentMerchant);
+              navigate("/basket/add");
+            }}
           />
         ))}
       </div>

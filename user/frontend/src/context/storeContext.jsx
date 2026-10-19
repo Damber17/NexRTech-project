@@ -13,6 +13,78 @@ import {
 
 const StoreContext = createContext(null);
 
+const createBasketItem = (product, quantity) => {
+  const unitKes = parseFloat(product.price?.kes || product.price || 0);
+  const unitAud = parseFloat(product.price?.aud || 0);
+
+  return {
+    product_id: product._id || product.id,
+    name: product.name,
+    unit_label: product.unit_label || product.unit || "",
+    product_image: product.product_image || product.image || "",
+    quantity,
+    unit_price: {
+      kes: unitKes.toFixed(2),
+      aud: unitAud.toFixed(2)
+    },
+    line_total: {
+      kes: (unitKes * quantity).toFixed(2),
+      aud: (unitAud * quantity).toFixed(2)
+    },
+    in_stock: product.in_stock !== false
+  };
+};
+
+const addProductToItems = (items, product, quantity) => {
+  const productId = product._id || product.id;
+  const existingIndex = items.findIndex(
+    (item) => String(item.product_id) === String(productId)
+  );
+
+  if (existingIndex === -1) {
+    return [...items, createBasketItem(product, quantity)];
+  }
+
+  const nextItems = [...items];
+  const item = nextItems[existingIndex];
+  const newQuantity = item.quantity + quantity;
+  const unitKes = parseFloat(item.unit_price.kes);
+  const unitAud = parseFloat(item.unit_price.aud);
+  nextItems[existingIndex] = {
+    ...item,
+    quantity: newQuantity,
+    line_total: {
+      kes: (unitKes * newQuantity).toFixed(2),
+      aud: (unitAud * newQuantity).toFixed(2)
+    }
+  };
+  return nextItems;
+};
+
+const getBasketTotals = (items) => {
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const subtotalKes = items.reduce(
+    (total, item) => total + parseFloat(item.line_total.kes),
+    0
+  );
+  const subtotalAud = items.reduce(
+    (total, item) => total + parseFloat(item.line_total.aud),
+    0
+  );
+  const serviceKes = items.length > 0 ? 50 : 0;
+  const serviceAud = items.length > 0 ? 0.55 : 0;
+
+  return {
+    item_count: itemCount,
+    subtotal: { kes: subtotalKes.toFixed(2), aud: subtotalAud.toFixed(2) },
+    service_charge: { kes: serviceKes.toFixed(2), aud: serviceAud.toFixed(2) },
+    total: {
+      kes: (subtotalKes + serviceKes).toFixed(2),
+      aud: (subtotalAud + serviceAud).toFixed(2)
+    }
+  };
+};
+
 export const useStore = () => {
   const context = useContext(StoreContext);
   if (!context) {
@@ -26,6 +98,7 @@ export const useBasket = () => {
   const store = useStore();
   return {
     basket: store.basket,
+    baskets: store.baskets,
     items: store.basket.items,
     itemCount: store.basket.item_count,
     subtotal: store.basket.subtotal,
@@ -33,6 +106,7 @@ export const useBasket = () => {
     total: store.basket.total,
     merchant: store.basket.merchant,
     addToBasket: store.addToBasket,
+    beginAddToBasket: store.beginAddToBasket,
     updateQuantity: store.updateQuantity,
     removeFromBasket: store.removeFromBasket,
     clearBasket: store.clearBasket,
@@ -67,155 +141,124 @@ export function StoreProvider({ children }) {
   const [merchants] = useState(initialMerchants);
   const [products] = useState(initialProducts);
 
-  // Active basket state
-  const [basketItems, setBasketItems] = useState([
-    {
-      product_id: "1",
-      name: "Fresh Milk (500ml)",
-      unit_label: "500ml bottle",
-      product_image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=700",
-      quantity: 2,
-      unit_price: { kes: "57.00", aud: "0.63" },
-      line_total: { kes: "114.00", aud: "1.26" },
-      in_stock: true
-    },
-    {
-      product_id: "2",
-      name: "Sourdough Artisanal Bread",
-      unit_label: "1 loaf",
-      product_image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=700",
-      quantity: 1,
-      unit_price: { kes: "400.00", aud: "4.43" },
-      line_total: { kes: "400.00", aud: "4.43" },
-      in_stock: true
-    }
-  ]);
-
-  const [basketMerchant, setBasketMerchant] = useState({
+  const [basketList, setBasketList] = useState([{
     _id: "1",
-    id: "1",
-    business_name: "SupaMart Grocers",
-    address: "Moi Avenue, Nairobi"
-  });
+    public_id: "BK-1234",
+    basket_name: "Weekly groceries",
+    status: "open",
+    merchant: merchants[0],
+    items: [
+      createBasketItem(products[0], 2),
+      createBasketItem(products[1], 1)
+    ],
+    fx_rate: "90.30"
+  }]);
+  const [activeBasketId, setActiveBasketId] = useState("1");
+  const [pendingBasketItem, setPendingBasketItem] = useState(null);
 
   const [orders, setOrders] = useState(initialOrders);
   const [currentOrder, setCurrentOrder] = useState(initialOrders[0]);
 
-  // Derived basket calculations
-  const basket = useMemo(() => {
-    const itemCount = basketItems.reduce((acc, item) => acc + item.quantity, 0);
-    const subtotalKesNum = basketItems.reduce(
-      (acc, item) => acc + parseFloat(item.line_total.kes),
-      0
-    );
-    const subtotalAudNum = basketItems.reduce(
-      (acc, item) => acc + parseFloat(item.line_total.aud),
-      0
-    );
-
-    const serviceKesNum = basketItems.length > 0 ? 50.0 : 0.0;
-    const serviceAudNum = basketItems.length > 0 ? 0.55 : 0.0;
-
-    const totalKesNum = subtotalKesNum + serviceKesNum;
-    const totalAudNum = subtotalAudNum + serviceAudNum;
-
-    return {
-      _id: "1",
-      public_id: "BK-1234",
-      basket_name: "Weekly groceries",
-      status: "open",
-      merchant: basketMerchant,
-      items: basketItems,
-      item_count: itemCount,
-      subtotal: {
-        kes: subtotalKesNum.toFixed(2),
-        aud: subtotalAudNum.toFixed(2)
-      },
-      service_charge: {
-        kes: serviceKesNum.toFixed(2),
-        aud: serviceAudNum.toFixed(2)
-      },
-      total: {
-        kes: totalKesNum.toFixed(2),
-        aud: totalAudNum.toFixed(2)
-      },
-      fx_rate: "90.30"
-    };
-  }, [basketItems, basketMerchant]);
+  const baskets = useMemo(() => basketList.map((savedBasket) => ({
+    ...savedBasket,
+    ...getBasketTotals(savedBasket.items)
+  })), [basketList]);
+  const basket = baskets.find((savedBasket) => savedBasket._id === activeBasketId) || baskets[0];
 
   // Basket actions
-  const addToBasket = (product, qty = 1, merchant = null) => {
-    if (merchant) {
-      setBasketMerchant(merchant);
-    }
-    setBasketItems((prev) => {
-      const existingIndex = prev.findIndex((i) => i.product_id === (product._id || product.id));
-      const unitKes = parseFloat(product.price?.kes || product.price || 0);
-      const unitAud = parseFloat(product.price?.aud || 0);
+  const beginAddToBasket = (product, quantity = 1, merchant = null) => {
+    if (product.in_stock === false) return;
+    setPendingBasketItem({ product, quantity, merchant });
+  };
 
-      if (existingIndex > -1) {
-        const next = [...prev];
-        const newQty = next[existingIndex].quantity + qty;
-        next[existingIndex] = {
-          ...next[existingIndex],
-          quantity: newQty,
-          line_total: {
-            kes: (unitKes * newQty).toFixed(2),
-            aud: (unitAud * newQty).toFixed(2)
+  const updatePendingBasketItemQuantity = (quantity) => {
+    setPendingBasketItem((pendingItem) => (
+      pendingItem ? { ...pendingItem, quantity } : pendingItem
+    ));
+  };
+
+  const addToBasket = (product, quantity = 1, merchant = null, basketId = activeBasketId) => {
+    if (product.in_stock === false) return;
+    setBasketList((prev) => prev.map((savedBasket) => (
+      savedBasket._id === basketId
+        ? {
+            ...savedBasket,
+            merchant: savedBasket.merchant || merchant,
+            items: addProductToItems(savedBasket.items, product, quantity)
           }
-        };
-        return next;
-      } else {
-        const newItem = {
-          product_id: product._id || product.id,
-          name: product.name,
-          unit_label: product.unit_label || product.unit || "",
-          product_image: product.product_image || product.image || "",
-          quantity: qty,
-          unit_price: {
-            kes: unitKes.toFixed(2),
-            aud: unitAud.toFixed(2)
-          },
-          line_total: {
-            kes: (unitKes * qty).toFixed(2),
-            aud: (unitAud * qty).toFixed(2)
-          },
-          in_stock: product.in_stock !== false
-        };
-        return [...prev, newItem];
-      }
-    });
+        : savedBasket
+    )));
+    setActiveBasketId(basketId);
+  };
+
+  const addPendingItemToBasket = (basketId, quantity = pendingBasketItem?.quantity || 1) => {
+    if (!pendingBasketItem) return false;
+    const targetBasket = basketList.find((savedBasket) => savedBasket._id === basketId);
+    if (!targetBasket) return false;
+
+    setBasketList((prev) => prev.map((savedBasket) => (
+      savedBasket._id === basketId
+        ? {
+            ...savedBasket,
+            items: addProductToItems(savedBasket.items, pendingBasketItem.product, quantity)
+          }
+        : savedBasket
+    )));
+    setActiveBasketId(basketId);
+    setPendingBasketItem(null);
+    return true;
+  };
+
+  const createBasketWithPendingItem = (name, quantity = pendingBasketItem?.quantity || 1) => {
+    if (!pendingBasketItem || !name.trim()) return false;
+    const id = `basket-${Date.now()}`;
+    const newBasket = {
+      _id: id,
+      public_id: `BK-${id.slice(-6)}`,
+      basket_name: name.trim(),
+      status: "open",
+      merchant: pendingBasketItem.merchant,
+      items: [createBasketItem(pendingBasketItem.product, quantity)],
+      fx_rate: "90.30"
+    };
+    setBasketList((prev) => [...prev, newBasket]);
+    setActiveBasketId(id);
+    setPendingBasketItem(null);
+    return true;
   };
 
   const updateQuantity = (productId, newQty) => {
-    setBasketItems((prev) => {
-      if (newQty < 1) {
-        return prev.filter((i) => i.product_id !== productId);
-      }
-      return prev.map((item) => {
-        if (item.product_id === productId) {
-          const unitKes = parseFloat(item.unit_price.kes);
-          const unitAud = parseFloat(item.unit_price.aud);
-          return {
-            ...item,
-            quantity: newQty,
-            line_total: {
-              kes: (unitKes * newQty).toFixed(2),
-              aud: (unitAud * newQty).toFixed(2)
-            }
-          };
-        }
-        return item;
-      });
-    });
+    setBasketList((prev) => prev.map((savedBasket) => {
+      if (savedBasket._id !== activeBasketId) return savedBasket;
+      const items = newQty < 1
+        ? savedBasket.items.filter((item) => String(item.product_id) !== String(productId))
+        : savedBasket.items.map((item) => {
+            if (String(item.product_id) !== String(productId)) return item;
+            const unitKes = parseFloat(item.unit_price.kes);
+            const unitAud = parseFloat(item.unit_price.aud);
+            return {
+              ...item,
+              quantity: newQty,
+              line_total: {
+                kes: (unitKes * newQty).toFixed(2),
+                aud: (unitAud * newQty).toFixed(2)
+              }
+            };
+          });
+      return { ...savedBasket, items };
+    }));
   };
 
   const removeFromBasket = (productId) => {
-    setBasketItems((prev) => prev.filter((i) => i.product_id !== productId));
+    updateQuantity(productId, 0);
   };
 
   const clearBasket = () => {
-    setBasketItems([]);
+    setBasketList((prev) => prev.map((savedBasket) => (
+      savedBasket._id === activeBasketId
+        ? { ...savedBasket, items: [] }
+        : savedBasket
+    )));
   };
 
   // Orders actions
@@ -323,7 +366,13 @@ export function StoreProvider({ children }) {
         merchants,
         products,
         basket,
+        baskets,
+        pendingBasketItem,
         addToBasket,
+        beginAddToBasket,
+        updatePendingBasketItemQuantity,
+        addPendingItemToBasket,
+        createBasketWithPendingItem,
         updateQuantity,
         removeFromBasket,
         clearBasket,
