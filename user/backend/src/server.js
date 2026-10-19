@@ -5,11 +5,22 @@ require('dotenv').config({
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
 const productRoutes = require('../routes/productRoutes');
 const basketRoutes = require('../routes/basketRoutes');
+const { notFound, errorHandler } = require('../middleware/errorHandler');
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
+
+app.use(helmet());
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:3000' }));
+app.use(morgan('dev'));
+
+// The Stripe webhook route goes HERE later, BEFORE express.json()
 
 app.use(express.json());
 
@@ -22,6 +33,10 @@ app.get('/api/health', (_req, res) => {
     database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
   });
 });
+
+// These two must stay LAST
+app.use(notFound);
+app.use(errorHandler);
 
 async function startServer() {
   if (!process.env.MONGODB_URI) {
