@@ -130,7 +130,7 @@ export function StoreProvider({ children }) {
     username: "ngawang",
     email: "ngawang.pema@example.com",
     whatsapp_number: "+61 412 345 678",
-    roles: ["payer", "recipient"],
+    roles: ["payer"],
     country: "AU",
     user_image: "https://i.pravatar.cc/100?img=47",
     account_status: "active",
@@ -262,10 +262,16 @@ export function StoreProvider({ children }) {
   };
 
   // Orders actions
-  const createOrder = ({ payer = "self", recipient_phone = "", payer_phone = "" }) => {
+  const createOrder = ({
+    payer = "self",
+    payer_phone = "",
+    recipient_name = "",
+    recipient_phone = ""
+  }) => {
     const randomSuffix = Math.floor(10000 + Math.random() * 90000);
     const newId = String(orders.length + 1);
     const publicId = `GR-${randomSuffix}`;
+    const collectionCode = `C${Math.floor(100 + Math.random() * 900)}X`;
 
     const newOrder = {
       _id: newId,
@@ -283,8 +289,8 @@ export function StoreProvider({ children }) {
         whatsapp_number_masked: payer_phone || "+61 4•• ••• 678"
       },
       recipient: {
-        name: "Amina Otieno",
-        whatsapp_number_masked: recipient_phone || "+254 7•• ••• 678"
+        name: recipient_name,
+        whatsapp_number: recipient_phone
       },
       items: [...basket.items],
       item_count: basket.item_count,
@@ -292,23 +298,16 @@ export function StoreProvider({ children }) {
       service_charge: { ...basket.service_charge },
       total: { ...basket.total },
       status: payer === "self" ? "preparing" : "payment_requested",
-      status_label: payer === "self" ? "Being Fulfilled" : "Payment Requested",
+      status_label: payer === "self" ? "Preparing Order" : "Payment Requested",
       my_role: "payer",
       created_at: new Date().toISOString(),
       date: "Today, Just now",
-      collection_code: `C${Math.floor(100 + Math.random() * 900)}X`,
-      fulfillment: {
-        status: "preparing",
-        collection_code: `C${Math.floor(100 + Math.random() * 900)}X`,
-        estimated_ready_at: "45 mins",
-        driver_name: "John Kamau",
-        driver_phone: "+254 700 123 456"
-      },
+      collection_code: collectionCode,
       timeline: [
         { key: "basket_created", label: "Basket Created", state: "done", at: "Just now" },
         { key: "payment_completed", label: "Payment Completed", state: payer === "self" ? "done" : "upcoming", at: payer === "self" ? "Just now" : null },
         { key: "preparing", label: "Preparing Order", state: payer === "self" ? "current" : "upcoming", at: null },
-        { key: "received", label: "Received", state: "upcoming", at: null }
+        { key: "received", label: "Collected", state: "upcoming", at: null }
       ],
       actions: {
         can_pay: payer !== "self",
@@ -338,7 +337,7 @@ export function StoreProvider({ children }) {
           return {
             ...o,
             status: "received",
-            status_label: "Received",
+            status_label: "Collected",
             timeline: o.timeline.map((t) => ({ ...t, state: "done" })),
             actions: { ...o.actions, can_mark_received: false }
           };

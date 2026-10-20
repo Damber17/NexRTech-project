@@ -33,7 +33,6 @@ export default function TransactionDetails() {
     ["Date", order.date || "Recent"],
     ["Status", order.status_label || order.status || "Completed"],
     ["Payer", order.payer?.name || "Ngawang Pema"],
-    ["Recipient", order.recipient?.name || "Amina Otieno"],
     ["Amount", `KSh ${order.total?.kes || order.total}`],
     ...(order.total?.aud ? [["Foreign Amount", `AUD ${order.total.aud}`]] : []),
   ];

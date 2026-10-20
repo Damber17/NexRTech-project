@@ -28,13 +28,40 @@ export default function PaymentPending() {
           {isLinkMode ? <Send size={36} color="#2563eb" /> : <Clock size={36} color="#e48700" />}
         </div>
 
-        <h2>{isLinkMode ? "Payment Link Sent" : "Processing Payment"}</h2>
+        <h2>{isLinkMode ? "Payment Request Created" : "Processing Payment"}</h2>
 
         <p style={{ maxWidth: "320px", margin: "0 auto 20px" }}>
           {isLinkMode
-            ? `We sent a secure WhatsApp payment link to ${order?.payer?.whatsapp_number_masked || "the payer"}. Once paid, the merchant will be notified immediately.`
+            ? `A payment request was created for ${order?.payer?.whatsapp_number_masked || "the payer"}. Once paid, the merchant will be notified immediately.`
             : "We are waiting for payment confirmation from the payment provider. We'll notify you on WhatsApp once confirmed."}
         </p>
+
+        {order?.recipient?.whatsapp_number && (
+          <div style={{ width: "100%", marginBottom: "20px" }}>
+            <a
+              className="primary-btn"
+              href={`https://wa.me/${order.recipient.whatsapp_number.replace(/\D/g, "")}?text=${encodeURIComponent(
+                [
+                  `Hi ${order.recipient.name}, here is your basket from ${order.merchant?.business_name || order.shop}:`,
+                  ...(order.items || []).map((item) => `- ${item.name} x ${item.quantity}: KSh ${item.line_total?.kes || item.line_total}`),
+                  `Subtotal: KSh ${order.subtotal?.kes || order.subtotal}`,
+                  `Service charge: KSh ${order.service_charge?.kes || order.service_charge}`,
+                  `Total: KSh ${order.total?.kes || order.total}`,
+                  `Pickup: ${order.merchant?.address || "Check with the merchant"}`,
+                  `Order reference: ${order.public_id}`
+                ].join("\n")
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+              style={{ display: "block", textDecoration: "none" }}
+            >
+              Share Basket with {order.recipient.name} on WhatsApp
+            </a>
+            <p className="muted small" style={{ margin: "8px 0 0" }}>
+              WhatsApp will open with the basket details ready for you to send.
+            </p>
+          </div>
+        )}
 
         {order && (
           <div className="panel" style={{ width: "100%", textAlign: "left", marginBottom: "20px" }}>

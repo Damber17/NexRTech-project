@@ -23,9 +23,9 @@ const authFetch = async (url, options = {}) => {
   });
 
   if (response.status === 401) {
-    // Token expired or invalid - clear token and redirect to login
+    // Token expired or invalid; this app supports guest browsing.
     localStorage.removeItem('token');
-    window.location.href = '/auth/login';
+    window.location.href = '/home';
     throw new Error('UNAUTHENTICATED');
   }
 

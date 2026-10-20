@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, Phone, UserRound } from "lucide-react";
 
 import {
   Screen,
@@ -15,8 +15,9 @@ export default function Checkout() {
   const { basket, createOrder } = useStore();
 
   const [payerOption, setPayerOption] = useState("self"); // "self" or "other"
-  const [recipientPhone, setRecipientPhone] = useState("+254 712 345 678");
   const [payerPhone, setPayerPhone] = useState("+61 412 345 678");
+  const [recipientName, setRecipientName] = useState("");
+  const [recipientPhone, setRecipientPhone] = useState("");
 
   if (!basket || !basket.items || basket.items.length === 0) {
     return (
@@ -34,19 +35,23 @@ export default function Checkout() {
   const handleCheckout = () => {
     const order = createOrder({
       payer: payerOption,
-      recipient_phone: payerOption === "self" ? recipientPhone : "",
-      payer_phone: payerOption === "other" ? payerPhone : ""
+      payer_phone: payerOption === "other" ? payerPhone : "",
+      recipient_name: recipientName,
+      recipient_phone: recipientPhone
     });
 
     if (payerOption === "self") {
-      navigate(`/payment/pending?orderId=${order._id}&payment=init`);
+      navigate(`/payment/checkout?orderId=${order._id}`);
     } else {
       navigate(`/payment/pending?orderId=${order._id}&mode=link`);
     }
   };
 
+  const recipientDigits = recipientPhone.replace(/\D/g, "");
   const isButtonDisabled =
-    (payerOption === "self" && !recipientPhone.trim()) ||
+    !recipientName.trim() ||
+    recipientDigits.length < 8 ||
+    recipientDigits.length > 15 ||
     (payerOption === "other" && !payerPhone.trim());
 
   return (
@@ -67,7 +72,7 @@ export default function Checkout() {
             />
             <div>
               <strong>I'll pay myself</strong>
-              <small className="muted">Pay with card, recipient gets goods</small>
+              <small className="muted">Pay by card; the order is collected from the merchant</small>
             </div>
           </label>
 
@@ -83,34 +88,11 @@ export default function Checkout() {
             />
             <div>
               <strong>Someone else pays</strong>
-              <small className="muted">Share WhatsApp payment link</small>
+              <small className="muted">Share a WhatsApp payment link; collect from the merchant</small>
             </div>
           </label>
         </div>
       </div>
-
-      {payerOption === "self" && (
-        <div className="panel">
-          <h3 className="card-title">Recipient Details</h3>
-
-          <label className="field">
-            <div className="row">
-              <Phone size={14} color="#e48700" />
-              <span>Recipient's WhatsApp number</span>
-            </div>
-            <input
-              type="tel"
-              placeholder="+254 7XX XXX XXX"
-              value={recipientPhone}
-              onChange={(e) => setRecipientPhone(e.target.value)}
-              required
-            />
-          </label>
-          <p className="muted small" style={{ margin: 0 }}>
-            The recipient in Kenya will receive collection alerts and verification code on WhatsApp.
-          </p>
-        </div>
-      )}
 
       {payerOption === "other" && (
         <div className="panel">
@@ -136,11 +118,47 @@ export default function Checkout() {
       )}
 
       <div className="panel">
+        <h3 className="card-title">Recipient Details</h3>
+
+        <label className="field">
+          <div className="row">
+            <UserRound size={14} color="#e48700" />
+            <span>Recipient's name</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Enter recipient's name"
+            value={recipientName}
+            onChange={(e) => setRecipientName(e.target.value)}
+            required
+          />
+        </label>
+
+        <label className="field">
+          <div className="row">
+            <Phone size={14} color="#e48700" />
+            <span>Recipient's WhatsApp number</span>
+          </div>
+          <input
+            type="tel"
+            placeholder="+254 7XX XXX XXX"
+            value={recipientPhone}
+            onChange={(e) => setRecipientPhone(e.target.value)}
+            required
+          />
+        </label>
+
+        <p className="muted small" style={{ margin: 0 }}>
+          Enter the number with its country code. The basket will be shared to the recipient on WhatsApp after checkout.
+        </p>
+      </div>
+
+      <div className="panel">
         <h3 className="card-title">Order Summary</h3>
 
         <div className="row muted small" style={{ marginBottom: "12px" }}>
           <MapPin size={13} color="#e48700" />
-          <span>{basket.merchant?.business_name || "Merchant"}</span>
+          <span>Pickup from {basket.merchant?.business_name || "merchant"}</span>
         </div>
 
         {basket.items.map((item) => (

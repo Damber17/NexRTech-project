@@ -53,7 +53,7 @@ export const products = [
     name: "Fresh Milk (500ml)",
     unit: "500ml bottle",
     unit_label: "500ml bottle",
-    description: "Fresh, locally sourced whole milk in a sealed bottle. Delivered cold directly from local farms.",
+    description: "Fresh, locally sourced whole milk kept cold in a sealed bottle.",
     category: "Dairy",
     image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=700",
     product_image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=700",
@@ -148,10 +148,6 @@ export const initialOrders = [
       name: "Ngawang Pema",
       whatsapp_number_masked: "+61 4•• ••• 678"
     },
-    recipient: {
-      name: "Amina Otieno",
-      whatsapp_number_masked: "+254 7•• ••• 678"
-    },
     items: [
       {
         product_id: "1",
@@ -177,23 +173,16 @@ export const initialOrders = [
     service_charge: { kes: "50.00", aud: "0.55" },
     total: { kes: "564.00", aud: "6.24" },
     status: "preparing",
-    status_label: "Being Fulfilled",
+    status_label: "Preparing Order",
     my_role: "payer",
     created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
     date: "Today, 10:24 AM",
     collection_code: "K7M2QD",
-    fulfillment: {
-      status: "preparing",
-      collection_code: "K7M2QD",
-      estimated_ready_at: "11:30 AM",
-      driver_name: "John Kamau",
-      driver_phone: "+254 700 123 456"
-    },
     timeline: [
       { key: "basket_created", label: "Basket Created", state: "done", at: "10:24 AM" },
       { key: "payment_completed", label: "Payment Completed", state: "done", at: "10:30 AM" },
       { key: "preparing", label: "Preparing Order", state: "current", at: null },
-      { key: "received", label: "Received", state: "upcoming", at: null }
+      { key: "received", label: "Collected", state: "upcoming", at: null }
     ],
     actions: {
       can_pay: false,
@@ -215,10 +204,6 @@ export const initialOrders = [
       name: "Ngawang Pema",
       whatsapp_number_masked: "+61 4•• ••• 678"
     },
-    recipient: {
-      name: "Amina Otieno",
-      whatsapp_number_masked: "+254 7•• ••• 678"
-    },
     items: [
       {
         product_id: "2",
@@ -235,21 +220,16 @@ export const initialOrders = [
     service_charge: { kes: "0.00", aud: "0.00" },
     total: { kes: "400.00", aud: "4.43" },
     status: "received",
-    status_label: "Received",
+    status_label: "Collected",
     my_role: "payer",
     created_at: new Date(Date.now() - 86400000).toISOString(),
     date: "Yesterday, 2:30 PM",
     collection_code: "M4X9LP",
-    fulfillment: {
-      status: "received",
-      collection_code: "M4X9LP",
-      estimated_ready_at: "Completed"
-    },
     timeline: [
       { key: "basket_created", label: "Basket Created", state: "done", at: "Yesterday, 2:10 PM" },
       { key: "payment_completed", label: "Payment Completed", state: "done", at: "Yesterday, 2:15 PM" },
       { key: "preparing", label: "Prepared", state: "done", at: "Yesterday, 2:40 PM" },
-      { key: "received", label: "Received", state: "done", at: "Yesterday, 3:15 PM" }
+      { key: "received", label: "Collected", state: "done", at: "Yesterday, 3:15 PM" }
     ],
     actions: {
       can_pay: false,
@@ -270,10 +250,6 @@ export const initialOrders = [
     payer: {
       name: "Ngawang Pema",
       whatsapp_number_masked: "+61 4•• ••• 678"
-    },
-    recipient: {
-      name: "Amina Otieno",
-      whatsapp_number_masked: "+254 7•• ••• 678"
     },
     items: [
       {
@@ -296,9 +272,6 @@ export const initialOrders = [
     created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
     date: "Oct 15, 2026",
     collection_code: null,
-    fulfillment: {
-      status: "cancelled"
-    },
     timeline: [
       { key: "basket_created", label: "Basket Created", state: "done", at: "Oct 15, 9:00 AM" },
       { key: "cancelled", label: "Order Cancelled", state: "done", at: "Oct 15, 9:20 AM" }

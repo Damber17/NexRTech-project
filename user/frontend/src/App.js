@@ -7,8 +7,6 @@ import {
 } from "react-router-dom";
 
 // Pages
-import Login from "./pages/Login";
-import VerifyPin from "./pages/VerifyPin";
 import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
 import ProductDetails from "./pages/ProductDetails";
@@ -18,12 +16,12 @@ import CreateBasket from "./pages/CreateBasket";
 import Checkout from "./pages/Checkout";
 
 import PaymentPending from "./pages/PaymentPending";
+import PaymentCheckout from "./pages/PaymentCheckout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
-import OrderTracking from "./pages/OrderTracking";
 
 import TransactionHistory from "./pages/TransactionHistory";
 import TransactionDetails from "./pages/TransactionDetails";
@@ -44,16 +42,6 @@ function App() {
             element={
               <Navigate to="/home" replace />
             }
-          />
-
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-
-          <Route
-            path="/verify-pin"
-            element={<VerifyPin />}
           />
 
           <Route
@@ -97,6 +85,11 @@ function App() {
           />
 
           <Route
+            path="/payment/checkout"
+            element={<PaymentCheckout />}
+          />
+
+          <Route
             path="/payment/pending"
             element={<PaymentPending />}
           />
@@ -124,11 +117,6 @@ function App() {
           <Route
             path="/orders/:id"
             element={<OrderDetails />}
-          />
-
-          <Route
-            path="/tracking/:id"
-            element={<OrderTracking />}
           />
 
           <Route

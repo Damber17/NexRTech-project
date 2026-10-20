@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { MapPin, CheckCircle2, Navigation } from "lucide-react";
+import { MapPin, CheckCircle2 } from "lucide-react";
 
 import {
   Screen,
@@ -49,7 +49,6 @@ export default function OrderDetails() {
     });
   };
 
-  const canTrack = order.status === "preparing" || order.status === "ready" || order.status === "paid";
   const canMarkReceived = order.status === "preparing" || order.status === "ready";
 
   return (
@@ -68,18 +67,6 @@ export default function OrderDetails() {
         <p className="muted small" style={{ marginTop: "4px" }}>
           Placed: {formatDate(order.created_at || order.date)}
         </p>
-
-        {canTrack && (
-          <div style={{ marginTop: "14px" }}>
-            <PrimaryButton 
-              onClick={() => navigate(`/tracking/${order._id || order.id}`)}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
-            >
-              <Navigation size={18} />
-              Track Live Fulfillment
-            </PrimaryButton>
-          </div>
-        )}
       </div>
 
       <div className="panel">
@@ -89,7 +76,20 @@ export default function OrderDetails() {
           <MapPin size={14} color="#e48700" />
           <span>{order.merchant?.address || "Nairobi, Kenya"}</span>
         </p>
+        <p className="muted small" style={{ marginBottom: 0 }}>
+          Pick up your order from this merchant when it is ready.
+        </p>
       </div>
+
+      {order.recipient && (
+        <div className="panel">
+          <h3 className="card-title">Recipient</h3>
+          <strong style={{ fontSize: "15px" }}>{order.recipient.name}</strong>
+          <p className="muted small" style={{ marginBottom: 0 }}>
+            WhatsApp: {order.recipient.whatsapp_number}
+          </p>
+        </div>
+      )}
 
       <div className="panel">
         <h3 className="card-title">Items</h3>
@@ -169,7 +169,7 @@ export default function OrderDetails() {
             onClick={handleMarkReceived}
             style={{ background: "#188b43" }}
           >
-            Mark as Received ✓
+            Mark as Collected ✓
           </button>
         </div>
       )}

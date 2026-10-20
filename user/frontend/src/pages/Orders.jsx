@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Navigation } from "lucide-react";
 
 import {
   Screen,
@@ -58,7 +57,7 @@ export default function Orders() {
           { key: "preparing", label: "Preparing" },
           { key: "ready", label: "Ready" },
           { key: "payment_requested", label: "Pending" },
-          { key: "received", label: "Received" },
+          { key: "received", label: "Collected" },
           { key: "cancelled", label: "Cancelled" },
         ].map((item) => (
           <button
@@ -75,7 +74,6 @@ export default function Orders() {
         <div className="orders-list">
           {filteredOrders.map((order) => {
             const orderKey = order._id || order.id;
-            const canTrack = order.status === "preparing" || order.status === "ready" || order.status === "paid";
 
             return (
               <div
@@ -104,33 +102,6 @@ export default function Orders() {
                   </b>
                 </div>
 
-                {canTrack && (
-                  <div style={{ marginTop: "12px", borderTop: "1px dashed #eee", paddingTop: "10px" }}>
-                    <button
-                      className="row between"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/tracking/${orderKey}`);
-                      }}
-                      style={{
-                        width: "100%",
-                        background: "#fffaf2",
-                        border: "1px solid #ffd899",
-                        borderRadius: "8px",
-                        padding: "6px 12px",
-                        color: "#e48700",
-                        fontSize: "13px",
-                        fontWeight: 600
-                      }}
-                    >
-                      <span className="row" style={{ gap: "6px" }}>
-                        <Navigation size={14} />
-                        Track Live Order
-                      </span>
-                      <ArrowRight size={14} />
-                    </button>
-                  </div>
-                )}
               </div>
             );
           })}
